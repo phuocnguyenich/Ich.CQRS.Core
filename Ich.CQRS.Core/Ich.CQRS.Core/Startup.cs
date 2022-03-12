@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Ich.CQRS.Core.Code.Caching;
+using Microsoft.AspNetCore.Mvc;
+using Dofactory.CQRS.Core;
 
 namespace Ich.CQRS.Core
 {
@@ -27,10 +30,21 @@ namespace Ich.CQRS.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddScoped<ICache, Cache>();
+
 
             // Create connectionString with root path location
             var connectionString = _config.GetConnectionString("CQRS").Replace("{Path}", _env.ContentRootPath);
             services.AddDbContext<CQRSContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            })
+                .AddRazorRuntimeCompilation()
+                .AddFlatAreas(new FlatAreaOptions());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +70,7 @@ namespace Ich.CQRS.Core
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
