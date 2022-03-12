@@ -1,0 +1,5 @@
+Ich.CQRS.Core/obj/
+*.dll
+*.json
+Ich.CQRS.Core/Ich.CQRS.Core/bin/Debug/
+Ich.CQRS.Core/Ich.CQRS.Core/obj/

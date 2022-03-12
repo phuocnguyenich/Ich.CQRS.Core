@@ -10,6 +10,17 @@
 
   <ItemGroup>
     <None Include="Domain\Booking.partial.cs" />
+    <None Include="wwwroot\lib\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <None Include="wwwroot\lib\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery\jquery.js" />
+    <None Include="wwwroot\lib\jquery\jquery.min.js" />
+    <None Include="wwwroot\lib\moment\moment.js" />
+    <None Include="wwwroot\lib\moment\moment.min.js" />
   </ItemGroup>
 
   <ItemGroup>
