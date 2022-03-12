@@ -1,3 +1,4 @@
+using Ich.CQRS.Core.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,22 +9,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ich.CQRS.Core
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private IConfiguration _config { get; }
+        private IWebHostEnvironment _env;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration config, IWebHostEnvironment env)
+        {
+            _config = config;
+            _env = env;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+
+            // Create connectionString with root path location
+            var connectionString = _config.GetConnectionString("CQRS").Replace("{Path}", _env.ContentRootPath);
+            services.AddDbContext<CQRSContext>(options => options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
