@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Ich.CQRS.Core.Code.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Dofactory.CQRS.Core;
+using System.Reflection;
+using MediatR;
 
 namespace Ich.CQRS.Core
 {
@@ -45,10 +47,12 @@ namespace Ich.CQRS.Core
                 .AddRazorRuntimeCompilation()
                 .AddFlatAreas(new FlatAreaOptions());
 
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CQRSContext db)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +76,8 @@ namespace Ich.CQRS.Core
             {
                 endpoints.MapControllers();
             });
+
+            db.Database.ExecuteSqlRaw("SELECT 1"); // Warmup localdb for better users experience
         }
     }
 }
