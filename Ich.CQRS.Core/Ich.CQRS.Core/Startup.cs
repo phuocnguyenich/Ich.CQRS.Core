@@ -15,6 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 using Dofactory.CQRS.Core;
 using System.Reflection;
 using MediatR;
+using Ich.CQRS.Core.Code.Database;
+using Ich.CQRS.Core.Code.Events;
+using Ich.CQRS.Core.Code.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace Ich.CQRS.Core
 {
@@ -34,7 +38,11 @@ namespace Ich.CQRS.Core
         {
             services.AddMemoryCache();
             services.AddScoped<ICache, Cache>();
+            services.AddScoped<ILookup, Lookup>();
+            services.AddScoped<IRollup, Rollup>();
+            services.AddScoped<IEvent, Code.Events.Event>();
 
+            services.AddHttpContextAccessor();
 
             // Create connectionString with root path location
             var connectionString = _config.GetConnectionString("CQRS").Replace("{Path}", _env.ContentRootPath);
@@ -52,8 +60,10 @@ namespace Ich.CQRS.Core
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CQRSContext db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CQRSContext db, IHttpContextAccessor httpContextAccessor)
         {
+            ServiceLocator.Register(httpContextAccessor);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
