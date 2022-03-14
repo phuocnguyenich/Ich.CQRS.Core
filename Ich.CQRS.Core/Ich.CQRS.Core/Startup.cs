@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Dofactory.CQRS.Core;
 using System.Reflection;
 using MediatR;
+using Ich.CQRS.Core.Code.Database;
+using Ich.CQRS.Core.Code.Events;
 
 namespace Ich.CQRS.Core
 {
@@ -34,7 +36,9 @@ namespace Ich.CQRS.Core
         {
             services.AddMemoryCache();
             services.AddScoped<ICache, Cache>();
-
+            services.AddScoped<ILookup, Lookup>();
+            services.AddScoped<IRollup, Rollup>();
+            services.AddScoped<IEvent, Code.Events.Event>();
 
             // Create connectionString with root path location
             var connectionString = _config.GetConnectionString("CQRS").Replace("{Path}", _env.ContentRootPath);
