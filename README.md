@@ -1,5 +1,5 @@
 # Ich.CQRS.Core
-CQRS reference application is an airline reservation system that allows travel
+CQRS application is an airline reservation system that allows travel
 agents to book flights and make seating reservations.
 
 ## Prerequisites
